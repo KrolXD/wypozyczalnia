@@ -1,0 +1,20 @@
+<table id="myTable">
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Date of rental</th>
+      <th>Date of planned return</th>
+      <th>Date of actual return</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each list}}
+    <tr>
+      <td>{{this.filmData.title}}</td>
+      <td>{{this.dateOfRental}}</td>
+      <td>{{this.date_of_planned_return}}</td>
+      <td>{{this.date_of_actual_return}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>

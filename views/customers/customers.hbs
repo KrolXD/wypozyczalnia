@@ -1,0 +1,93 @@
+<table id="myTable">
+  <thead>
+    <tr>
+      <th onclick="sortTable(0)">ID</th>
+      <th onclick="sortTable(1)">Name</th>
+      <th onclick="sortTable(2)">Last name</th>
+      <th onclick="sortTable(3)">Address</th>
+      <th>Phone number</th>
+      <th>Date of registration</th>
+      <th onclick="sortTable(6)">Active rentals</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each list}}
+    <tr>
+      <td>{{this.customerId}}</td>
+      <td>{{this.name}}</td>
+      <td>{{this.lastName}}</td>
+      <td>{{this.address}}</td>
+      <td>{{this.phoneNumber}}</td>
+      <td>{{this.dateOfRegistration}}</td>
+      <td>{{this.activeRentals}}</td>
+      <td class="button"><button onclick="window.location.href='customers/addEditCustomers/{{this._id}}'"><i class="far fa-edit"></i></button><button onclick="canDelete('{{this.activeRentals}}', '{{this._id}}')"><i class="fas fa-trash-alt"></i></button></td>
+    </tr>
+    {{/each}}
+  </tbody> 
+</table>
+
+<div class="buttons">
+  <button class="add" onclick="window.location.href='customers/addEditCustomers'"><i class="fas fa-plus"></i></button>
+  <button class="search"><i class="fas fa-search"></i></button>
+</div>
+
+<script>
+  function sortTable(n) {
+var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+
+table = document.getElementById("myTable");
+switching = true;
+dir = "asc";
+while (switching) {
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+                var cmpX=isNaN(parseInt(x.innerHTML))?x.innerHTML.toLowerCase():parseInt(x.innerHTML);
+                var cmpY=isNaN(parseInt(y.innerHTML))?y.innerHTML.toLowerCase():parseInt(y.innerHTML);
+cmpX=(cmpX=='-')?0:cmpX;
+cmpY=(cmpY=='-')?0:cmpY;
+        if (dir == "asc") {
+            if (cmpX > cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        } else if (dir == "desc") {
+            if (cmpX < cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        }
+    }
+    if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;      
+    } else {
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+    }
+}
+}
+
+
+function canDelete(activeRentals, _id){
+  console.log(activeRentals);
+  if(activeRentals == '0')
+  {
+    var con = confirm("You will definitely delete this customer");
+    if(con)
+    {
+      document.location.href = "/customers/delete/"+_id;
+    }
+  }
+  else{
+    alert("Cannot delete a rented film");
+  }
+}
+  </script>

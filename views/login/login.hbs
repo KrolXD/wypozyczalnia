@@ -1,0 +1,15 @@
+ <main>
+<div class="login">
+<h2>Login</h2>
+<form action="/login" method="post">
+    <input type="hidden" name="csrfmiddlewaretoken" value="ZonfspZ2nQlW5WC6EzRGFhmELcLfsy951c6Y7R6yP70HZlskiTvx0yhl4fwikaBT">
+    <p><label>Username:</label> <input type="text" name="username" autofocus autocapitalize="none" autocomplete="username" maxlength="150" required></p>
+    <p><label>Password :</label> <input type="password" name="password" autocomplete="current-password" required></p>
+    <button type="submit">Login</button>
+</form>
+<div class="text-danger">
+            {{list.validationError}}
+</div>
+<a href="/login/registration">Create account</a>
+    </div>
+</main>

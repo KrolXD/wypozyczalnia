@@ -1,0 +1,45 @@
+<table id="myTable">
+  <thead>
+    <tr>
+      <th>Customer name</th>
+      <th>Customer last name</th>
+      <th>Title</th>
+      <th>Date of rental</th>
+      <th>Date of planned return</th>
+      <th>Date of actual return</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each list}}
+    <tr>
+      <td>{{this.customerData.name}}</td>
+      <td>{{this.customerData.lastName}}</td>
+      <td>{{this.filmData.title}}</td>
+      <td>{{this.dateOfRental}}</td>
+      <td>{{this.date_of_planned_return}}</td>
+      <td>{{this.date_of_actual_return}}</td>
+      <td><button class="button" onclick="isReturned('{{this._id}}','{{this.date_of_actual_return}}')"><i class="fas fa-undo-alt"></i></button></td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<script>
+    function isReturned(id, retuned)
+    {
+        if(retuned === "")
+        {
+            var con = confirm("Are you sure you want to return this movie?");
+            console.log(con);
+        }
+        if(con)
+        {
+          document.location.href = "/rental/return/"+id;
+        }
+        else
+        {
+            alert("This film has already been returned");
+        }
+    }
+</script>

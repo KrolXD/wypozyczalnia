@@ -1,0 +1,135 @@
+<table id="myTable">
+  <thead>
+    <tr>
+      <th onclick="sortTable(0)">ID</th>
+      <th onclick="sortTable(1)">Title</th>
+      <th onclick="sortTable(2)">Genre</th>
+      <th onclick="sortTable(3)">Director</th>
+      <th onclick="sortTable(4)">Lenght</th>
+      <th onclick="sortTable(5)">Availability</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each list}}
+    <tr>
+      <td>{{this.filmId}}</td>
+      <td>{{this.tytul}}</td>
+      <td>{{this.gatunek}}</td>
+      <td>{{this.rezyser}}</td>
+      <td>{{this.czas}}</td>
+      <td>{{this.dostepnosc}}</td>
+      <td class="button">
+        <button onclick="document.getElementById('{{this.filmId}}').classList.toggle('popupDisplayNone');"><i class="fas fa-info"></i></button><button onclick="window.location.href='films/addEditFilms/{{this._id}}'"><i class="far fa-edit"></i></button><button onclick="canDelete('{{this.dostepnosc}}', '{{this._id}}')"><i class="fas fa-trash-alt"></i></button>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+<div class="buttons">
+  <button class="add" onclick="window.location.href='films/addEditFilms'"><i class="fas fa-plus"></i></button>
+  <button class="search" onclick="document.getElementById('search').classList.toggle('popupDisplayNone');" ><i class="fas fa-search"></i></button>
+</div>
+
+<div class="popup popupDisplayNone" id="search">
+  <button onclick="document.getElementById('search').classList.toggle('popupDisplayNone');"><i class="fas fa-times"></i></button>
+    
+  <form action="/films/serch" method="POST" autocomplete="off">
+    <div class="wrapper">
+      <div class="shorts">
+        <select name="select" id="cars" multiple required>
+          <option value="id">Id</option>
+          <option value="title">Title</option>
+          <option value="genre">Genre</option>
+        </select>
+        <input type="text" name="question"  required>
+        
+      </div>
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
+</div>
+
+{{#each list}}
+  <div class="popup popupDisplayNone" id="{{this.filmId}}">
+    <button onclick="document.getElementById('{{this.filmId}}').classList.toggle('popupDisplayNone');"><i class="fas fa-times"></i></button>
+    <div class="content">
+      <div>
+        <p>Data:</p>
+        <p>{{this.dataDodania}}</p>
+      </div>
+      <div>
+        <p>Aktorzy:</p>
+        <p>{{this.aktorzy}}</p>
+      </div>
+      <div>
+        <p>Ocena:</p>
+        <p>{{this.ocena}}/10</p>
+      </div>
+      <div>
+        <p>Opis:</p>
+        <p>{{this.opis}}</p>
+      </div>
+    </div>
+  </div>
+{{/each}}
+
+<script>
+  function sortTable(n) {
+var table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+table = document.getElementById("myTable");
+switching = true;
+dir = "asc";
+while (switching) {
+    switching = false;
+    rows = table.getElementsByTagName("TR");
+    for (i = 1; i < (rows.length - 1); i++) {
+        shouldSwitch = false;
+        x = rows[i].getElementsByTagName("TD")[n];
+        y = rows[i + 1].getElementsByTagName("TD")[n];
+                var cmpX=isNaN(parseInt(x.innerHTML))?x.innerHTML.toLowerCase():parseInt(x.innerHTML);
+                var cmpY=isNaN(parseInt(y.innerHTML))?y.innerHTML.toLowerCase():parseInt(y.innerHTML);
+cmpX=(cmpX=='-')?0:cmpX;
+cmpY=(cmpY=='-')?0:cmpY;
+        if (dir == "asc") {
+            if (cmpX > cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        } else if (dir == "desc") {
+            if (cmpX < cmpY) {
+                shouldSwitch= true;
+                break;
+            }
+        }
+    }
+    if (shouldSwitch) {
+        rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+        switching = true;
+        switchcount ++;      
+    } else {
+        if (switchcount == 0 && dir == "asc") {
+            dir = "desc";
+            switching = true;
+        }
+    }
+}
+}
+
+//sprawdzanie czy można usunąć film
+function canDelete(dostepnosc, _id){
+  if(dostepnosc == 'true')
+  {
+    var con = confirm("You will definitely delete this video");
+    if(con)
+    {
+      document.location.href = "/films/delete/"+_id;
+    }
+  }
+  else{
+    alert("Cannot delete a rented film");
+  }
+}
+
+</script>
