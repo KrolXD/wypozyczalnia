@@ -49,7 +49,7 @@ app.use('/rental', rentalController);
 app.use('/login', loginController);
 
 
-
-app.listen(3000,() => {
+var server = app.listen(3000,() => {
     console.log('Express server started at port : 3000');
 });
+server.setTimeout(500000);
